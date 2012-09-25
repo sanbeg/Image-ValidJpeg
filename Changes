@@ -1,0 +1,6 @@
+Revision history for Perl extension Image::ValidJpeg.
+
+0.01  Mon Sep 24 21:37:39 2012
+	- original version; created by h2xs 1.23 with options
+		-n Image::ValidJpeg valid_jpeg.h
+
