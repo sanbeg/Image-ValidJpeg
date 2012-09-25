@@ -68,7 +68,9 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
       else if (marker == 0xd9) 
 	{
 	  unsigned char junk;
-	  fread(&junk, 1, 1, fh);
+	  if (fread(&junk, 1, 1, fh) > 0)
+	    return trailing_junk;
+	  
 	  if (feof(fh))
 	    return valid_jpeg_ok;
 	  else
@@ -95,7 +97,9 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	      }
 	  }
 	  
-	  fread(&length, 2, 1, fh);
+	  if ( fread(&length, 2, 1, fh) < 2 )
+	    return short_file;
+	  
 	  length = ntohs(length);
 
 	  if (valid_jpeg_debug) printf ("Length is %d\n", length);
