@@ -22,7 +22,20 @@ is( Image::ValidJpeg::valid_jpeg($fh), 4 );
 close($fh);
 
 open $fh, 't/short.jpg';
-is( Image::ValidJpeg::check_all($fh), 4 );
+is( Image::ValidJpeg::check_all($fh), 1 );
+close($fh);
+
+
+open $fh, 't/small.jpg';
+is( Image::ValidJpeg::check_tail($fh), 0 );
+close($fh);
+
+open $fh, 't/small.jpg';
+is( Image::ValidJpeg::valid_jpeg($fh), 0 );
+close($fh);
+
+open $fh, 't/small.jpg';
+is( Image::ValidJpeg::check_all($fh), 0 );
 close($fh);
 
 

@@ -10,6 +10,7 @@ enum valid_jpeg_status
     trailing_junk,
     stray_0,
     short_file,
+    missing_marker,
   };
 
 static void debug(const char * msg)
@@ -70,7 +71,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	  unsigned char junk;
 	  if (fread(&junk, 1, 1, fh) > 0)
 	    return trailing_junk;
-	  
+
 	  if (feof(fh))
 	    return valid_jpeg_ok;
 	  else
@@ -97,8 +98,8 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	      }
 	  }
 	  
-	  if ( fread(&length, 2, 1, fh) < 2 )
-	    return short_file;
+	  if ( fread(&length, 2, 1, fh) < 1 )
+	    return short_file+1;
 	  
 	  length = ntohs(length);
 
