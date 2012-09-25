@@ -11,3 +11,13 @@
 MODULE = Image::ValidJpeg		PACKAGE = Image::ValidJpeg		
 
 INCLUDE: const-xs.inc
+
+int
+check_tail(FILE * fh);
+
+int
+valid_jpeg(FILE * fh, int parse=0);
+
+int 
+check_all(FILE * fh);
+
