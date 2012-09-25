@@ -14,29 +14,29 @@ BEGIN { use_ok('Image::ValidJpeg') };
 # its man page ( perldoc Test::More ) for help writing this test script.
 
 open my($fh), 't/short.jpg';
-is( Image::ValidJpeg::check_tail($fh), 1 );
+is( Image::ValidJpeg::check_tail($fh), 1, "check_tail on invalid image" );
 close($fh);
 
 open $fh, 't/short.jpg';
-is( Image::ValidJpeg::valid_jpeg($fh), 4 );
+is( Image::ValidJpeg::valid_jpeg($fh), 4, "valid_jpeg on invalid image" );
 close($fh);
 
 open $fh, 't/short.jpg';
-is( Image::ValidJpeg::check_all($fh), 1 );
+is( Image::ValidJpeg::check_all($fh), 1, "check_all on invalid image" );
 close($fh);
 
 
 open $fh, 't/small.jpg';
-is( Image::ValidJpeg::check_tail($fh), 0 );
+is( Image::ValidJpeg::check_tail($fh), 0, "check_tail on valid image" );
+close($fh);
+
+
+open $fh, 't/small.jpg';
+is( Image::ValidJpeg::valid_jpeg($fh), 0, "valid_jpeg on valid image" );
 close($fh);
 
 open $fh, 't/small.jpg';
-is( Image::ValidJpeg::valid_jpeg($fh), 0 );
+is( Image::ValidJpeg::check_all($fh), 0, "check_all on valid image" );
 close($fh);
-
-open $fh, 't/small.jpg';
-is( Image::ValidJpeg::check_all($fh), 0 );
-close($fh);
-
 
 done_testing;
