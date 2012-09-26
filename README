@@ -23,15 +23,13 @@ To install this module type the following:
 
 DEPENDENCIES
 
-This module requires these other modules and libraries:
+This module requires no other modules or libraries; just a C compiler to
+build it.
 
-  blah blah blah
 
 COPYRIGHT AND LICENCE
 
-Put the correct copyright and licence information here.
-
-Copyright (C) 2012 by steve
+Copyright (C) 2012 by Steve Sanbeg
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.1 or,

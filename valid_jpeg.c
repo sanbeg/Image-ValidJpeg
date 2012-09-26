@@ -3,30 +3,9 @@
 
 unsigned char valid_jpeg_debug = 0;
 
-enum valid_jpeg_status 
-  {
-    valid_jpeg_ok = 0,
-    trailing_junk,
-    short_file,
-    bad_data,
-    invalid_header,
-  };
-
-int GOOD() 
+void set_valid_jpeg_debug(int x) 
 {
-  return valid_jpeg_ok;
-}
-int SHORT()
-{
-  return short_file;
-}
-int BAD()
-{
-  return bad_data;
-}
-int LONG()
-{
-  return trailing_junk;
+  valid_jpeg_debug = x;
 }
 
 static int max_seek_ = 512;
@@ -48,13 +27,13 @@ static void debug(const char * msg)
 int check_tail (FILE * fh) 
 {
   if( fseek(fh,-2,SEEK_END) ) 
-    return -1;
+    return BAD_;
 
   unsigned char bytes[2];
   int n_read = fread(bytes, 1, 2, fh);
   if ( (n_read==2) && (bytes[0]==0xff) && (bytes[1]==0xd9) )
-    return 0;
-  return 1;
+    return GOOD_;
+  return BAD_;
 }
 
 
@@ -69,20 +48,20 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
       unsigned char marker=0;
 
       if ( fread(&marker, 1, 1, fh) < 1 )
-	return short_file;
+	return SHORT_;
       if (marker != 0xff)
 	{
 	  
 	  if (! in_entropy)
 	    {
-	      return bad_data;
+	      return BAD_;
 	    }
 	  
 	  continue;
 	}
 
       if ( fread(&marker, 1, 1, fh) < 1 )
-	return short_file;
+	return SHORT_;
       
       if (marker != 0)
 	{
@@ -91,7 +70,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
       else
 	{
 	  if (! in_entropy)
-	    return bad_data;
+	    return BAD_;
 	  continue;
 	}
       if (marker == 0xd8)
@@ -100,12 +79,12 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	{
 	  unsigned char junk;
 	  if (fread(&junk, 1, 1, fh) > 0)
-	    return trailing_junk;
+	    return EXTRA_;
 
 	  if (feof(fh))
-	    return valid_jpeg_ok;
+	    return GOOD_;
 	  else
-	    return trailing_junk;
+	    return EXTRA_;
 	}
       
       else if ( (marker >= 0xd0) && (marker <= 0xd7) )
@@ -118,7 +97,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	    if ( seek_over_entropy ) 
 	      {
 		if( fseek(fh,-2,SEEK_END) ) 
-		  return -1;
+		  return SHORT_;
 		else
 		  continue;
 	      }
@@ -129,7 +108,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	  }
 	  
 	  if ( fread(&length, 2, 1, fh) < 1 )
-	    return short_file;
+	    return SHORT_;
 	  
 	  length = ntohs(length);
 
@@ -143,15 +122,19 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	      {
 		char junk;
 		if ( fread(&junk, 1, 1, fh) < 1 )
-		  return short_file;
+		  return SHORT_;
 	      }
 	}
       
     }
-  return short_file;
+  return SHORT_;
 }
 
-int check_all (FILE * fh) 
+int check_jpeg (FILE * fh) 
 {
   return valid_jpeg(fh, 1);
+}
+int check_all (FILE * fh) 
+{
+  return valid_jpeg(fh, 0);
 }

@@ -81,7 +81,31 @@ Image::ValidJpeg::valid_jpeg($fh);
 
 This module parses JPEG files to look for errors, such as truncated files.
 
-Blah blah blah.
+The methods return 0 if the file is valid, nonzero if an error is detected.
+
+=head2 METHODS
+
+=over
+
+=item B<check_tail>(I<$fh>)
+
+Look for an end of image marker in the last few bytes of I<$fh>.
+
+=item B<check_jpeg>(I<$fh>)
+
+Scan through the basic structure of the file, validating that it is correct,
+until it gets to the main image data.  Then, look for an end of image marker
+in the last few bytes of I<$fh>.
+
+=item B<check_all>(I<$fh>)
+
+Scan through the basic structure of the file, validating that it is correct;
+also scan the main image data byte by byte.  Verify that the file ends with
+end of image marker in the last few bytes of I<$fh>.  This it the most
+thorough method, but also the slowest, so probably most useful for checking
+a small number of images.
+
+=back
 
 =head2 EXPORT
 
