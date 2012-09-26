@@ -9,6 +9,7 @@ t/Image-ValidJpeg.t
 t/data/small.jpg
 t/data/short.jpg
 t/data/double.jpg
+t/data/extra.jpg
 fallback/const-c.inc
 fallback/const-xs.inc
 lib/Image/ValidJpeg.pm
