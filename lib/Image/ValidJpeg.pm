@@ -17,11 +17,25 @@ our @ISA = qw(Exporter);
 # This allows declaration	use Image::ValidJpeg ':all';
 # If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
 # will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
+our %EXPORT_TAGS = ( 
+    'all' => [ qw(
 check_tail
 check_jpeg
 check_all
-) ] );
+GOOD
+BAD
+SHORT
+EXTRA
+) ], 
+
+'constants' => [ qw(
+GOOD
+BAD
+SHORT
+EXTRA
+) ],
+
+);
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -71,11 +85,13 @@ Image::ValidJpeg - Perl extension for validating JPEG files.
 
 =head1 SYNOPSIS
 
-use Image::ValidJpeg;
+ use Image::ValidJpeg;
 
-open $fh, 'FILE.jpg';
+ open $fh, 'FILE.jpg';
 
-Image::ValidJpeg::valid_jpeg($fh);
+ if( Image::ValidJpeg::valid_jpeg($fh) ) {
+    print "FILE.jpg is bad\n";
+ }
 
 =head1 DESCRIPTION
 
@@ -135,11 +151,14 @@ we can't detect this condition without fully parsing the file.
 Returned if validation failed for other reasons, such as an invalid marker.
 Errors from I<check_jpeg> always return I<BAD>.
 
+=back
+
 =head2 EXPORT
 
 None by default.
 
-
+The check_* methods and constants can be imported individually, or they
+call all be imported via the I<':all'> tag.
 
 =head1 SEE ALSO
 

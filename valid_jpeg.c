@@ -8,7 +8,7 @@ void set_valid_jpeg_debug(int x)
   valid_jpeg_debug = x;
 }
 
-static int max_seek_ = 512;
+static int max_seek_ = 1024;
 
 
 int max_seek (int n) 

@@ -4,6 +4,7 @@ MANIFEST
 ppport.h
 README
 ValidJpeg.xs
+t/proto.t
 t/Image-ValidJpeg.t
 t/data/small.jpg
 t/data/short.jpg
