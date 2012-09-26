@@ -7,11 +7,14 @@ use Test::More;
 BEGIN { use_ok('Image::ValidJpeg') };
 
 #########################
+use Fatal 'open';
+my $fh;
 
-# Insert your test code below, the Test::More module is use()ed here so read
-# its man page ( perldoc Test::More ) for help writing this test script.
+##############################
+# Test trunated JPEG
+##############################
 
-open my($fh), 't/data/short.jpg';
+open $fh, 't/data/short.jpg';
 is( Image::ValidJpeg::check_tail($fh), Image::ValidJpeg::BAD, "check_tail on invalid image" );
 close($fh);
 
@@ -23,6 +26,10 @@ open $fh, 't/data/short.jpg';
 is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::SHORT, "check_all on invalid image" );
 close($fh);
 
+
+##############################
+# Test valid JPEG
+##############################
 
 open $fh, 't/data/small.jpg';
 is( Image::ValidJpeg::check_tail($fh), Image::ValidJpeg::GOOD, "check_tail on valid image" );
@@ -41,6 +48,10 @@ open $fh, 't/data/small.jpg';
 is( Image::ValidJpeg::check_tail($fh), Image::ValidJpeg::GOOD, "check_tail on valid image" );
 close($fh);
 
+########################################
+# Test valid JPEGs with extra data
+########################################
+
 #doubled jpeg
 open $fh, 't/data/double.jpg';
 is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::GOOD, "check_jpeg on double image" );
@@ -50,13 +61,13 @@ open $fh, 't/data/double.jpg';
 is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::EXTRA, "check_all on double image" );
 close($fh);
 
-#doubled jpeg
+#jpeg + some random junk
 open $fh, 't/data/extra.jpg';
-is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::BAD, "check_jpeg on double image" );
+is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::BAD, "check_jpeg on image + junk" );
 close($fh);
 
 open $fh, 't/data/extra.jpg';
-is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::EXTRA, "check_all on double image" );
+is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::EXTRA, "check_all on image + junk" );
 close($fh);
 
 done_testing;
