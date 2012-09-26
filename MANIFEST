@@ -8,3 +8,5 @@ t/Image-ValidJpeg.t
 fallback/const-c.inc
 fallback/const-xs.inc
 lib/Image/ValidJpeg.pm
+valid_jpeg.c
+valid_jpeg.h
