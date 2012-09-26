@@ -105,27 +105,31 @@ The methods return 0 if the file is valid, nonzero if an error is detected.
 
 =item B<check_tail>(I<$fh>)
 
-Look for an end of image marker in the last few bytes of I<$fh>.  This is
-slightly faster than I<check_jpeg> and should catch most truncated images,
-unless they happen to be truncated at the end of an embedded JPEG.
+Look for an end of image marker in the last few bytes of I<$fh>.  
+
+This is slightly faster than I<check_jpeg> and should catch most truncated
+images, unless they happen to be truncated at the end of an embedded JPEG.
 
 =item B<check_jpeg>(I<$fh>)
 
 Scan through the basic structure of the file, validating that it is correct,
 until it gets to the main image data.  Then, look for an end of image marker
-in the last few bytes of I<$fh>.  This can detect some problems that
-I<check_tail> cannot, without being noticeable slower, making it useful for
-scanning a large number of image files.
+in the last few bytes of I<$fh>.  
+
+This can detect some problems that I<check_tail> cannot, without being
+noticeably slower, making it useful for scanning a large number of image
+files.
 
 =item B<check_all>(I<$fh>)
 
 Scan through the basic structure of the file, validating that it is correct;
 also scan the main image data byte by byte.  Verify that the file ends with
-end of image marker in the last few bytes of I<$fh>.  This it the most
-thorough method, but also the slowest, so probably most useful for checking
-a small number of images.  It's the only one that can differentiate between
-a bad image and a valid image with extra data appended, or between a valid
-jpeg and two jpegs concatenated together.
+end of image marker in the last few bytes of I<$fh>.  
+
+This it the most thorough method, but also the slowest, so it's
+useful for checking a small number of images.  It's the only one that can
+differentiate between a bad image and a valid image with extra data
+appended, or between a valid jpeg and two jpegs concatenated together.
 
 =back
 
@@ -163,19 +167,8 @@ Errors from I<check_jpeg> always return I<BAD>.
 
 None by default.
 
-The check_* methods and constants can be imported individually, or they
+The I<check_*> methods and constants can be imported individually, or they
 call all be imported via the I<':all'> tag.
-
-=head1 SEE ALSO
-
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
 
 =head1 AUTHOR
 
