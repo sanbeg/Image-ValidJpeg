@@ -19,7 +19,7 @@ our @ISA = qw(Exporter);
 # will save memory.
 our %EXPORT_TAGS = ( 'all' => [ qw(
 check_tail
-valid_jpeg
+check_jpeg
 check_all
 ) ] );
 
@@ -106,6 +106,34 @@ thorough method, but also the slowest, so probably most useful for checking
 a small number of images.
 
 =back
+
+=head2 CONSTANTS
+
+The following contants are defined, to match the return values of the
+validation functions:
+
+=over
+
+=item B<GOOD>
+
+Returned for a valid JPEG.  This is guaranteed to be 0.
+
+=item B<SHORT>
+
+Returned if we ran out of data before the end marker was found (i.e. a
+truncated file).  Can only be returned by I<check_all>, since we can't
+detect this condition without fully parsing the file.
+
+=item B<EXTRA>
+
+Returned if the jpeg was otherwsie valid, there was more data in the file
+after the end marker was found.  Can only be returned by I<check_all>, since
+we can't detect this condition without fully parsing the file.
+
+=item B<BAD>
+
+Returned if validation failed for other reasons, such as an invalid marker.
+Errors from I<check_jpeg> always return I<BAD>.
 
 =head2 EXPORT
 
