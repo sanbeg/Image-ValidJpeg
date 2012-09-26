@@ -3,8 +3,6 @@
 
 #########################
 
-# change 'tests => 1' to 'tests => last_test_to_print';
-
 use Test::More;
 BEGIN { use_ok('Image::ValidJpeg') };
 
@@ -18,7 +16,7 @@ is( Image::ValidJpeg::check_tail($fh), Image::ValidJpeg::BAD, "check_tail on inv
 close($fh);
 
 open $fh, 't/data/short.jpg';
-is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::BAD, "valid_jpeg on invalid image" );
+is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::BAD, "check_jpeg on invalid image" );
 close($fh);
 
 open $fh, 't/data/short.jpg';
@@ -32,7 +30,7 @@ close($fh);
 
 
 open $fh, 't/data/small.jpg';
-is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::GOOD, "valid_jpeg on valid image" );
+is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::GOOD, "check_jpeg on valid image" );
 close($fh);
 
 open $fh, 't/data/small.jpg';
@@ -45,10 +43,19 @@ close($fh);
 
 #doubled jpeg
 open $fh, 't/data/double.jpg';
-is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::GOOD, "valid_jpeg on double image" );
+is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::GOOD, "check_jpeg on double image" );
 close($fh);
 
 open $fh, 't/data/double.jpg';
+is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::EXTRA, "check_all on double image" );
+close($fh);
+
+#doubled jpeg
+open $fh, 't/data/extra.jpg';
+is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::BAD, "check_jpeg on double image" );
+close($fh);
+
+open $fh, 't/data/extra.jpg';
 is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::EXTRA, "check_all on double image" );
 close($fh);
 
