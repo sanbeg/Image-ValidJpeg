@@ -18,7 +18,9 @@ our @ISA = qw(Exporter);
 # If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
 # will save memory.
 our %EXPORT_TAGS = ( 'all' => [ qw(
-	
+check_tail
+valid_jpeg
+check_all
 ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
@@ -65,18 +67,19 @@ __END__
 
 =head1 NAME
 
-Image::ValidJpeg - Perl extension for blah blah blah
+Image::ValidJpeg - Perl extension for validating JPEG files.
 
 =head1 SYNOPSIS
 
-  use Image::ValidJpeg;
-  blah blah blah
+use Image::ValidJpeg;
+
+open $fh, 'FILE.jpg';
+
+Image::ValidJpeg::valid_jpeg($fh);
 
 =head1 DESCRIPTION
 
-Stub documentation for Image::ValidJpeg, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
+This module parses JPEG files to look for errors, such as truncated files.
 
 Blah blah blah.
 
@@ -99,11 +102,11 @@ If you have a web site set up for your module, mention it here.
 
 =head1 AUTHOR
 
-steve, E<lt>steve@E<gt>
+Steve Sanbeg
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2012 by steve
+Copyright (C) 2012 by Steve Sanbeg
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.10.1 or,

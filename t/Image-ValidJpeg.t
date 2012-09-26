@@ -18,25 +18,25 @@ is( Image::ValidJpeg::check_tail($fh), 1, "check_tail on invalid image" );
 close($fh);
 
 open $fh, 't/short.jpg';
-is( Image::ValidJpeg::valid_jpeg($fh), 4, "valid_jpeg on invalid image" );
+is( Image::ValidJpeg::valid_jpeg($fh), Image::ValidJpeg::SHORT, "valid_jpeg on invalid image" );
 close($fh);
 
 open $fh, 't/short.jpg';
-is( Image::ValidJpeg::check_all($fh), 1, "check_all on invalid image" );
+is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::BAD, "check_all on invalid image" );
 close($fh);
 
 
 open $fh, 't/small.jpg';
-is( Image::ValidJpeg::check_tail($fh), 0, "check_tail on valid image" );
+is( Image::ValidJpeg::check_tail($fh), Image::ValidJpeg::GOOD, "check_tail on valid image" );
 close($fh);
 
 
 open $fh, 't/small.jpg';
-is( Image::ValidJpeg::valid_jpeg($fh), 0, "valid_jpeg on valid image" );
+is( Image::ValidJpeg::valid_jpeg($fh), Image::ValidJpeg::GOOD, "valid_jpeg on valid image" );
 close($fh);
 
 open $fh, 't/small.jpg';
-is( Image::ValidJpeg::check_all($fh), 0, "check_all on valid image" );
+is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::GOOD, "check_all on valid image" );
 close($fh);
 
 done_testing;

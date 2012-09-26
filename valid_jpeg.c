@@ -6,12 +6,38 @@ unsigned char valid_jpeg_debug = 0;
 enum valid_jpeg_status 
   {
     valid_jpeg_ok = 0,
-    missing_ff,
     trailing_junk,
-    stray_0,
     short_file,
-    missing_marker,
+    bad_data,
+    invalid_header,
   };
+
+int GOOD() 
+{
+  return valid_jpeg_ok;
+}
+int SHORT()
+{
+  return short_file;
+}
+int BAD()
+{
+  return bad_data;
+}
+int LONG()
+{
+  return trailing_junk;
+}
+
+static int max_seek_ = 512;
+
+
+int max_seek (int n) 
+{
+  int o = max_seek_;
+  max_seek_ = n;
+  return o;
+}
 
 static void debug(const char * msg)
 {
@@ -46,8 +72,12 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	return short_file;
       if (marker != 0xff)
 	{
+	  
 	  if (! in_entropy)
-	    return missing_ff;
+	    {
+	      return bad_data;
+	    }
+	  
 	  continue;
 	}
 
@@ -61,7 +91,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
       else
 	{
 	  if (! in_entropy)
-	    return stray_0;
+	    return bad_data;
 	  continue;
 	}
       if (marker == 0xd8)
@@ -99,13 +129,13 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	  }
 	  
 	  if ( fread(&length, 2, 1, fh) < 1 )
-	    return short_file+1;
+	    return short_file;
 	  
 	  length = ntohs(length);
 
 	  if (valid_jpeg_debug) printf ("Length is %d\n", length);
 #if 1
-	  if (length > 512) 
+	  if (length > max_seek_) 
 	    fseek(fh,length-2,SEEK_CUR);
 	  else
 #endif

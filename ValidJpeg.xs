@@ -21,3 +21,17 @@ valid_jpeg(FILE * fh, int parse=0);
 int 
 check_all(FILE * fh);
 
+int
+GOOD()
+
+int
+BAD()
+
+int
+SHORT()
+
+int
+LONG()
+
+int
+max_seek(int n)
