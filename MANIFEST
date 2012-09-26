@@ -5,6 +5,9 @@ ppport.h
 README
 ValidJpeg.xs
 t/Image-ValidJpeg.t
+t/data/small.jpg
+t/data/short.jpg
+t/data/double.jpg
 fallback/const-c.inc
 fallback/const-xs.inc
 lib/Image/ValidJpeg.pm
