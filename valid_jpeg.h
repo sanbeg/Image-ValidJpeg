@@ -15,5 +15,7 @@ int check_tail (FILE*);
 int valid_jpeg (FILE*, unsigned char);
 int check_jpeg (FILE*);
 int check_all (FILE*);
+int max_seek(int);
+void set_valid_jpeg_debug(int);
 
 #endif
