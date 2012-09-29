@@ -89,7 +89,7 @@ Image::ValidJpeg - Perl extension for validating JPEG files.
 
  open $fh, 'FILE.jpg';
 
- if( Image::ValidJpeg::valid_jpeg($fh) ) {
+ if( Image::ValidJpeg::check_jpeg($fh) ) {
     print "FILE.jpg is bad\n";
  }
 
