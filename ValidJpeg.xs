@@ -6,14 +6,9 @@
 
 #include <valid_jpeg.h>
 
-#include "const-c.inc"
-
-
 MODULE = Image::ValidJpeg		PACKAGE = Image::ValidJpeg		
 
 PROTOTYPES: ENABLE
-
-INCLUDE: const-xs.inc
 
 int
 check_tail(FILE * fh);
