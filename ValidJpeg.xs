@@ -11,6 +11,8 @@
 
 MODULE = Image::ValidJpeg		PACKAGE = Image::ValidJpeg		
 
+PROTOTYPES: ENABLE
+
 INCLUDE: const-xs.inc
 
 int
