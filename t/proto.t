@@ -1,4 +1,4 @@
-use Test::More;
+use Test::More tests=>2;
 
 use Image::ValidJpeg ':all';
 
@@ -11,4 +11,3 @@ my $rv = check_jpeg $fh;
 is( $rv, GOOD, "valid_jpeg on valid image" );
 close($fh);
 
-done_testing;

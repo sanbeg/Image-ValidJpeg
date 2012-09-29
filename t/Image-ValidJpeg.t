@@ -3,7 +3,7 @@
 
 #########################
 
-use Test::More;
+use Test::More tests=>12;
 BEGIN { use_ok('Image::ValidJpeg') };
 
 #########################
@@ -70,4 +70,4 @@ open $fh, 't/data/extra.jpg';
 is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::EXTRA, "check_all on image + junk" );
 close($fh);
 
-done_testing;
+

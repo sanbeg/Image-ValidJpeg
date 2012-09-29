@@ -1,6 +1,6 @@
 package Image::ValidJpeg;
 
-use 5.010001;
+use 5.006002;
 use strict;
 use warnings;
 use Carp;
