@@ -7,6 +7,8 @@ use Carp;
 
 require Exporter;
 
+our $VERSION = '1.001001';
+
 our @ISA = qw(Exporter);
 
 # Items to export into callers namespace by default. Note: do not export
@@ -40,7 +42,6 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT;
 
-our $VERSION = '1.001001';
 
 require XSLoader;
 XSLoader::load('Image::ValidJpeg', $VERSION);
