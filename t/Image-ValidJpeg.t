@@ -3,7 +3,7 @@
 
 #########################
 
-use Test::More tests=>15;
+use Test::More tests=>18;
 BEGIN { use_ok('Image::ValidJpeg') };
 
 #########################
@@ -24,6 +24,22 @@ close($fh);
 
 open $fh, 't/data/short.jpg';
 is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::SHORT, "check_all on invalid image" );
+close($fh);
+
+##############################
+# Test empty JPEG
+##############################
+
+open $fh, 't/data/empty.jpg';
+is( Image::ValidJpeg::check_tail($fh), Image::ValidJpeg::BAD, "check_tail on empty file" );
+close($fh);
+
+open $fh, 't/data/empty.jpg';
+is( Image::ValidJpeg::check_jpeg($fh), Image::ValidJpeg::SHORT, "check_jpeg on empty file" );
+close($fh);
+
+open $fh, 't/data/empty.jpg';
+is( Image::ValidJpeg::check_all($fh), Image::ValidJpeg::SHORT, "check_all on empty file" );
 close($fh);
 
 
