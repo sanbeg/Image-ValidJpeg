@@ -53,30 +53,43 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 
       if ( fread(&marker, 1, 1, fh) < 1 )
 	return SHORT_;
-      if (marker != 0xff)
-	{
-	  
-	  if (! in_entropy)
-	    {
-	      return BAD_;
-	    }
-	  
-	  continue;
-	}
 
-      if ( fread(&marker, 1, 1, fh) < 1 )
-	return SHORT_;
-      
-      if (marker != 0)
+      if ( in_entropy ) 
 	{
-	  in_entropy = 0;
+	  if ( marker == 0xff ) 
+	    {
+	      if ( fread(&marker, 1, 1, fh) < 1 )
+		return SHORT_;
+	      if ( marker == 0 )
+		//escaped 0xff00
+		continue;
+	      else if ( (marker >= 0xd0) && (marker <= 0xd7) )
+		//RST
+		continue;
+	      else 
+		{
+		  //marker after data may be padded
+		  while ( marker == 0xff )
+		    if ( fread(&marker, 1, 1, fh) < 1 )
+		      return SHORT_;
+		  in_entropy = 0;
+		  
+		}
+	    } else continue;
+	  
 	}
-      else
+      else 
 	{
-	  if (! in_entropy)
-	    return BAD_;
-	  continue;
-	}
+	if (marker != 0xff)
+	  return BAD_;
+	
+	if ( fread(&marker, 1, 1, fh) < 1 )
+	  return SHORT_;
+	
+	if ( marker == 0 )
+	  return BAD_;
+      }
+
       if (marker == 0xd8)
 	debug("got start");
       else if (marker == 0xd9) 
@@ -91,8 +104,20 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	    return EXTRA_;
 	}
       
-      else if ( (marker >= 0xd0) && (marker <= 0xd7) )
-	debug("got RST");
+      else if ( (marker >= 0xd0) && (marker <= 0xd7) ) 
+	{
+	  /* RST should only be in entropy */
+	  debug("got stray RST");
+	  return BAD_;
+	  
+	}
+      
+      else if ( marker == 0xff01 ) 
+	{
+	  //rare marker for arithmetic encoding
+	  debug("got TEM");
+	}
+      
       else
 	{
 	  unsigned short length;
