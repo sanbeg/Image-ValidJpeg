@@ -3,6 +3,7 @@ Makefile.PL
 MANIFEST
 ppport.h
 README
+LICENSE
 ValidJpeg.xs
 t/proto.t
 t/Image-ValidJpeg.t

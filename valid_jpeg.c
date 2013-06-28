@@ -85,15 +85,16 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	
 	if ( fread(&marker, 1, 1, fh) < 1 )
 	  return SHORT_;
+	}
 	
-	if ( marker == 0 )
-	  return BAD_;
-      }
+      if ( marker == 0 )
+	return BAD_;
 
       if (marker == 0xd8)
 	debug("got start");
       else if (marker == 0xd9) 
 	{
+	  //EOI - unless multi-image, should also be EOF 
 	  unsigned char junk;
 	  if (fread(&junk, 1, 1, fh) > 0)
 	    return EXTRA_;
