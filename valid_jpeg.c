@@ -42,23 +42,23 @@ int check_tail (PerlIO * fh)
 
 
   
-int valid_jpeg (FILE * fh, unsigned char seek_over_entropy) 
+int valid_jpeg (PerlIO * fh, unsigned char seek_over_entropy) 
 {
   char in_entropy=0;
   int j;
   
-  while (! feof(fh))
+  while (! PerlIO_eof(fh))
     {
       unsigned char marker=0;
 
-      if ( fread(&marker, 1, 1, fh) < 1 )
+      if ( PerlIO_read(fh, &marker, 1) < 1 )
 	return SHORT_;
 
       if ( in_entropy ) 
 	{
 	  if ( marker == 0xff ) 
 	    {
-	      if ( fread(&marker, 1, 1, fh) < 1 )
+	      if ( PerlIO_read(fh, &marker, 1) < 1 )
 		return SHORT_;
 	      if ( marker == 0 )
 		//escaped 0xff00
@@ -70,7 +70,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 		{
 		  //marker after data may be padded
 		  while ( marker == 0xff )
-		    if ( fread(&marker, 1, 1, fh) < 1 )
+		    if ( PerlIO_read(fh, &marker, 1) < 1 )
 		      return SHORT_;
 		  in_entropy = 0;
 		  
@@ -83,7 +83,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	if (marker != 0xff)
 	  return BAD_;
 	
-	if ( fread(&marker, 1, 1, fh) < 1 )
+	if ( PerlIO_read(fh, &marker, 1) < 1 )
 	  return SHORT_;
 	}
 	
@@ -96,10 +96,10 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	{
 	  //EOI - unless multi-image, should also be EOF 
 	  unsigned char junk;
-	  if (fread(&junk, 1, 1, fh) > 0)
+	  if (PerlIO_read(fh, &junk, 1) > 0)
 	    return EXTRA_;
 
-	  if (feof(fh))
+	  if (PerlIO_eof(fh))
 	    return GOOD_;
 	  else
 	    return EXTRA_;
@@ -126,7 +126,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	  if (marker == 0xda) {
 	    if ( seek_over_entropy ) 
 	      {
-		if( fseek(fh,-2,SEEK_END) ) 
+		if( PerlIO_seek(fh,-2,SEEK_END) ) 
 		  return SHORT_;
 		else
 		  continue;
@@ -137,7 +137,7 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	      }
 	  }
 	  
-	  if ( fread(&length, 2, 1, fh) < 1 )
+	  if ( PerlIO_read(fh, &length, 2) < 1 )
 	    return SHORT_;
 	  
 	  length = ntohs(length);
@@ -145,13 +145,13 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
 	  if (valid_jpeg_debug) printf ("Length is %d\n", length);
 #if 1
 	  if (length > max_seek_) 
-	    fseek(fh,length-2,SEEK_CUR);
+	    PerlIO_seek(fh,length-2,SEEK_CUR);
 	  else
 #endif
 	    for (j=2; j<length; ++j)
 	      {
 		char junk;
-		if ( fread(&junk, 1, 1, fh) < 1 )
+		if ( PerlIO_read(fh, &junk, 1) < 1 )
 		  return SHORT_;
 	      }
 	}
@@ -160,11 +160,11 @@ int valid_jpeg (FILE * fh, unsigned char seek_over_entropy)
   return SHORT_;
 }
 
-int check_jpeg (FILE * fh) 
+int check_jpeg (PerlIO * fh) 
 {
   return valid_jpeg(fh, 1);
 }
-int check_all (FILE * fh) 
+int check_all (PerlIO * fh) 
 {
   return valid_jpeg(fh, 0);
 }
