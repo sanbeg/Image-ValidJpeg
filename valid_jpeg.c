@@ -21,7 +21,7 @@ int max_seek (int n)
 static void debug(const char * msg)
 {
   if (valid_jpeg_debug)
-    puts(msg);
+    printf("%s\n", msg);
 }
 
 int check_tail (PerlIO * fh) 
@@ -29,6 +29,10 @@ int check_tail (PerlIO * fh)
   unsigned char bytes[2];
   int n_read;
   
+  //make sure we have 2 bytes, so seek can be valid
+  if ( PerlIO_read(fh, bytes, 2) < 2)
+    return BAD_;
+
   if( PerlIO_seek(fh,-2,SEEK_END) ) 
     return BAD_;
 
@@ -96,23 +100,11 @@ int valid_jpeg (PerlIO * fh, unsigned char seek_over_entropy)
 	{
 	  //EOI - unless multi-image, should also be EOF 
 	  unsigned char junk;
-	  int nb;
-	  printf("looking for end\n");
-	  
-	  if (nb=PerlIO_read(fh, &junk, 1) > 0)
+	  if ( PerlIO_read(fh, &junk, 1) > 0)
 	    {
-	      printf("Got %d extra\n", nb);
-	      
 	      return EXTRA_;
 	    }
-#if 0  
-	  if (PerlIO_eof(fh))
-	    return GOOD_;
-	  else
-	    return EXTRA_;
-#else
 	  return GOOD_;
-#endif
 	}
       
       else if ( (marker >= 0xd0) && (marker <= 0xd7) ) 

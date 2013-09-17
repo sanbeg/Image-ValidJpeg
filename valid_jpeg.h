@@ -1,6 +1,5 @@
 #ifndef VALID_JPEG_H_
 #define VALID_JPEG_H_
-#include <stdio.h>
 
 #include "EXTERN.h"
 #include "perl.h"
