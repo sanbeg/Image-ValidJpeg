@@ -11,7 +11,7 @@ MODULE = Image::ValidJpeg		PACKAGE = Image::ValidJpeg
 PROTOTYPES: ENABLE
 
 int
-check_tail(FILE * fh);
+check_tail(PerlIO * fh);
 
 int
 valid_jpeg(FILE * fh, int skip=0);

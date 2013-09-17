@@ -24,15 +24,15 @@ static void debug(const char * msg)
     puts(msg);
 }
 
-int check_tail (FILE * fh) 
+int check_tail (PerlIO * fh) 
 {
   unsigned char bytes[2];
   int n_read;
   
-  if( fseek(fh,-2,SEEK_END) ) 
+  if( PerlIO_seek(fh,-2,SEEK_END) ) 
     return BAD_;
 
-  n_read = fread(bytes, 1, 2, fh);
+  n_read = PerlIO_read(fh, bytes, 2);
 
   if ( (n_read==2) && (bytes[0]==0xff) && (bytes[1]==0xd9) )
     return GOOD_;

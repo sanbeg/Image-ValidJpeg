@@ -2,6 +2,11 @@
 #define VALID_JPEG_H_
 #include <stdio.h>
 
+#include "EXTERN.h"
+#include "perl.h"
+#include "XSUB.h"
+#include "ppport.h"
+
 enum vj_status_
   {
     GOOD_ = 0,
@@ -11,7 +16,7 @@ enum vj_status_
   };
 
 
-int check_tail (FILE*);
+int check_tail (PerlIO*);
 int valid_jpeg (FILE*, unsigned char);
 int check_jpeg (FILE*);
 int check_all (FILE*);
