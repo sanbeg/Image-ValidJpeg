@@ -96,13 +96,23 @@ int valid_jpeg (PerlIO * fh, unsigned char seek_over_entropy)
 	{
 	  //EOI - unless multi-image, should also be EOF 
 	  unsigned char junk;
-	  if (PerlIO_read(fh, &junk, 1) > 0)
-	    return EXTRA_;
-
+	  int nb;
+	  printf("looking for end\n");
+	  
+	  if (nb=PerlIO_read(fh, &junk, 1) > 0)
+	    {
+	      printf("Got %d extra\n", nb);
+	      
+	      return EXTRA_;
+	    }
+#if 0  
 	  if (PerlIO_eof(fh))
 	    return GOOD_;
 	  else
 	    return EXTRA_;
+#else
+	  return GOOD_;
+#endif
 	}
       
       else if ( (marker >= 0xd0) && (marker <= 0xd7) ) 

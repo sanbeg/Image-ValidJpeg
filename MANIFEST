@@ -7,6 +7,7 @@ LICENSE
 ValidJpeg.xs
 t/proto.t
 t/Image-ValidJpeg.t
+t/memory.t
 t/data/small.jpg
 t/data/short.jpg
 t/data/double.jpg
