@@ -7,7 +7,7 @@ use Carp;
 
 require Exporter;
 
-our $VERSION = '1.001001';
+our $VERSION = '1.002000';
 
 our @ISA = qw(Exporter);
 

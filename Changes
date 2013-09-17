@@ -1,3 +1,5 @@
+1.002
+	- user PerlIO instead of stdio, to support in memory handles
 
 1.001.001
 	- fix another windows compilation issue
